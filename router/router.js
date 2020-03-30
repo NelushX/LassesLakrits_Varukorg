@@ -210,10 +210,29 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
 })
 
 // För att komma till checkout
-router.route("/checkout")
-    .get(async (req, res) => {
-        const shoppingBag = await Candy.find();
-        res.render("checkout.ejs", { token: req.cookies.jsonwebtoken, shoppingBag, title: "Checkout" });
-    })
+// router.route("/checkout")
+//     .get(async (req, res) => {
+//         const shoppingBag = await Candy.find();
+//         res.render("checkout.ejs", { token: req.cookies.jsonwebtoken, shoppingBag, title: "Checkout" });
+//     })
+
+router.get("/checkout", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId");
+    res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, title: "Önskelista - Lasses" });
+});
+
+router.get("/checkout/:id", verifyToken, async (req, res) => {
+    const candy = await Candy.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    await user.addToWishList(candy);
+    res.redirect("/checkout");
+});
+
+router.get("/deleteItem/:id", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id });
+    user.removeFromList(req.params.id);
+    res.redirect("/checkout");
+})
 
 module.exports = router;

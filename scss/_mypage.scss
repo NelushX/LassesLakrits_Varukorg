@@ -18,9 +18,31 @@
     
 }
 
+
 .wishlist {
+    margin-top: 25px;
     list-style-type: none;
     padding: 0;
+    a {
+        color: black;
+        text-decoration: underline;
+        text-underline-position: under;
+    }
+}
+
+.wishlistItem {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+.wishlisten {
+    margin-bottom: 10px;
+}
+
+.wishlistButton {
+    margin-bottom: 30px;
 }
 
 h6 {

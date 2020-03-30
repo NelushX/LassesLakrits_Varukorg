@@ -13,15 +13,15 @@
 
             <ul class="wishlist">
                 <% user.wishlist.forEach( (candy)=>{ %>
-                <li>
-                    <p><%= candy.candyId.name %></p>
+                <li class="wishlisten">
+                    <a href="/allproducts/<%=candy.candyId.name %>"><p><%= candy.candyId.name %></p></a>
                     <p><%= candy.candyId.price %> kr </p>
                     <div>
-                        <img src="<%= candy.candyId.img %>" alt="Bild på lakrits" class="hover wishlistImg">
+                        <a href="/allproducts/<%=candy.candyId.name %>"><img src="<%= candy.candyId.img %>" alt="Bild på lakrits" class="hover wishlistImg"></a>
                     </div>
                 </li>
                 <a href="/deleteWishlist/<%= candy.candyId._id%>"><button style="margin-top: 10px;" type="button"
-                        class="btn btn-outline-dark">Ta bort från listan</button></a> <br><br>
+                        class="btn btn-outline-dark wishlistButton">Ta bort från listan</button></a>
                 <% } ) %>
             </ul>
         </div>
