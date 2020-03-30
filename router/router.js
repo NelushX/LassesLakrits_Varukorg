@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("./verifyToken")
 const config = require("../config/config");
 const Candy = require("../model/productSchema");
+const Cart = require("../model/cartSchema");
 const router = express.Router();
 
 const transport = nodemailer.createTransport(sendGridTransport({

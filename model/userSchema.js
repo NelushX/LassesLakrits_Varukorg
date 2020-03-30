@@ -13,12 +13,20 @@ const userSchema = new mongoose.Schema({
             ref: "Candy"
         }
     }],
+    // Användarinfo som finns på myPage
     userinfo: [{
         lastname: { type: String },
         phonenumber: { type: Number },
         address: { type: String },
         city: { type: String },
         zip: { type: Number }
+    }],
+    // Användarinfo som fylls i vid beställning
+    order: [{
+        orderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cart"
+        }
     }]
 });
 
