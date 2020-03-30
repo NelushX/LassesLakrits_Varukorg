@@ -248,6 +248,30 @@ html body {
   text-align: center;
   display: inline-block; }
 
+#myform {
+  text-align: center;
+  padding: 5px; }
+
+.qty {
+  width: 40px;
+  text-align: center;
+  font-size: 1.3rem; }
+
+.qtyplus, .qtyminus {
+  width: 30%;
+  font-weight: bold; }
+
+@media (min-width: 992px) {
+  .totalsummor {
+    width: 44%; } }
+
+.totalsummor .total {
+  font-weight: 500; }
+
+.totalsummor .totalInklMoms {
+  font-size: 1.2rem;
+  font-weight: bold; }
+
 .wishlisten {
   margin-bottom: 10px; }
 

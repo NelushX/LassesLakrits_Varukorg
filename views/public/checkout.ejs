@@ -1,6 +1,12 @@
 <% if(token) { %> <%- include("userprofile/headermember.ejs") %> <% } 
  else { %> <%- include("header.ejs") %> <% } %>
 
+
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="./src/bootstrap-input-spinner.js"></script>
+<script>
+	$("input[type='number']").inputSpinner()
+</script>
 <div class="container mypage">
   <div class="row justify-content-center py-2">
     <h3 class="shoppingcart-title">Din Varukorg</h3>
@@ -13,25 +19,68 @@
         <p>Din varukorg är tom</p>
         <% } %>
 
-        <ul class="wishlist ">
-          <% user.wishlist.forEach( (candy)=>{ %>
-          <li class="wishlistItem">
-            <a href="/allproducts/<%=candy.candyId.name %>">
-              <p><%= candy.candyId.name %></p>
-            </a>
-            <p><%= candy.candyId.price %> kr </p>
-            <div>
-              <a href="/allproducts/<%=candy.candyId.name %>"><img src="<%= candy.candyId.img %>" alt="Bild på lakrits"
-                  class="hover wishlistImg"></a>
-            </div>
-            <a href="/deleteWishlist/<%= candy.candyId._id%>"><button style="margin-top: 10px;" type="button"
-                class="btn btn-outline-dark wishlistButton">Ta bort från listan</button></a>
-          </li>
-          <% } ) %>
-        </ul>
-      </div>
-    </div>
-  </div>
+				<ul class="wishlist ">
+					<% user.wishlist.forEach( (candy)=>{ %>
+					<li class="wishlistItem">
+						<a href="/allproducts/<%=candy.candyId.name %>">
+							<p><%= candy.candyId.name %></p>
+						</a>
+						<p><%= candy.candyId.price %> kr </p>
+						<div>
+							<a href="/allproducts/<%=candy.candyId.name %>"><img src="<%= candy.candyId.img %>"
+									alt="Bild på lakrits" class="hover wishlistImg"></a>
+						</div>
+						<form id="myform" method="POST" action="#">
+							<input type="button" value="-" class="qtyminus btn btn-light" field="quantity" />
+							<input type="text" name="quantity" value="1" class="qty btn" />
+							<input type="button" value="+" class="qtyplus btn btn-light" field="quantity" />
+						</form>
+						<a href="/deleteWishlist/<%= candy.candyId._id%>"><button style="margin-top: 10px;"
+								type="button" class="btn btn-outline-dark wishlistButton">Ta bort från
+								listan</button></a>
+					</li>
+					<% } ) %>
+				</ul>
+			</div>
+		</div>
+		<section class="orderForm totalsummor my-4 mx-4 pb-5 ml-auto">
+			<div class="container pt-4">
+				<!-- <div class="row">
+					<div class="col-12 text-center">
+						<h3>Totalsummor</h3>
+						<hr class="mt-1">
+					</div>
+				</div> -->
+				<div class="row mb-3 text-right">
+					<div class="col-6 total">
+						Summa artiklar:
+					</div>
+					<div class="col-6 total">
+						129 kr
+					</div>
+					<div class="col-6">
+						Fraktavgift:
+					</div>
+					<div class="col-6">
+						0 kr
+					</div>
+				</div>
+				<div class="row text-right">
+					<div class="col-6 totalInklMoms">
+						Totalt inkl. moms:
+					</div>
+					<div class="col-6 totalInklMoms">
+						129 kr
+					</div>
+					<div class="col-6">
+						varav moms:
+					</div>
+					<div class="col-6">
+						25,80 kr
+					</div>
+				</div>
+		</section>
+	</div>
 
   <div class="row justify-content-center pt-2">
     <h3 class="checkout-information-title">Din Information</h3>
