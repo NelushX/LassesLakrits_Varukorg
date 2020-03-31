@@ -42,9 +42,7 @@
     "@sendgrid/mail": "^6.5.5",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
-   
     "cookie-parser": "^1.4.5",
-  
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.3",
