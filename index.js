@@ -1,54 +1,33 @@
+const express = require("express");
 const mongoose = require("mongoose");
+const config = require("./config/config");
+const sassMiddleware = require("node-sass-middleware");
+const User = require("./model/userSchema")
+const lassesLakritsRouter = require("./router/router");
+const admin = require("./router/admin/admin");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const app = express();
 
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    password: { type: String, required: true },
-    admin: { type: Boolean, default: false },
-    resetToken: String,
-    expirationToken: Date,
-    wishlist: [{
-        candyId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Candy"
-        }
-    }],
-    // Användarinfo som finns på myPage
-    userinfo: [{
-        lastname: { type: String },
-        phonenumber: { type: Number },
-        address: { type: String },
-        city: { type: String },
-        zip: { type: Number }
-    }],
-    // Användarinfo som fylls i vid beställning
-    order: [{
-        orderId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Cart"
-        }
-    }]
-});
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
 
-// Lägg till produkt till wishlist
-userSchema.methods.addToWishList = function (candy) {
-    this.wishlist.push({ candyId: candy._id })
-    const newWishlist = this.wishlist.filter(function ({ candyId }) {
+app.use(sassMiddleware({
+    src: path.join(__dirname, "scss"),
+    dest: path.join(__dirname, "public")
+}));
+app.use(express.static(path.join(__dirname, "public")));
 
-        return !this.has(`${candyId}`) && this.add(`${candyId}`)
-    }, new Set)
-    this.wishlist = [...newWishlist]
-    return this.save();
-}
+app.set("view engine", "ejs");
+app.set('views',  [path.join(__dirname, 'views'),path.join(__dirname, 'views/public')]);
 
-// Ta bort produkt från wishlist
-userSchema.methods.removeFromList = function (candyId) {
-    const restOftheProducts = this.wishlist.filter(candy =>
-        candy.candyId.toString() !== candyId.toString()
-    );
-    this.wishlist = restOftheProducts;
-    return this.save();
-}
+app.use(lassesLakritsRouter);
+app.use(admin);
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+app.get("*", (req, res) => res.send("404"));
+
+const port = process.env.PORT || 8000;
+mongoose.connect(config.databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    .then(() => app.listen(port, () => console.log(`Connection success on port: ${port}`)));
+
+module.exports = app
