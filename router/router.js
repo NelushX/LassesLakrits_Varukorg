@@ -1,7 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser")
 const User = require("../model/userSchema");
-const UserInfo = require("../model/userInfoSchema");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendGridTransport = require("nodemailer-sendgrid-transport")
@@ -173,7 +171,7 @@ router.get("/mypage", verifyToken, async (req, res) => {
 
 // Mypage - Update user information
 router.post("/mypage", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id });
+    await User.findOne({ _id: req.user.user._id });
 
     await User.updateOne({ _id: req.user.user._id },
         {
@@ -185,8 +183,15 @@ router.post("/mypage", verifyToken, async (req, res) => {
                 city: req.body.city 
             }
         }, { runValidators: true });
-        await user.addPrivateInfo(user);
         res.redirect("/mypage");
+});
+
+router.get("/wishlist/:id", verifyToken, async (req, res) => {
+    const candy = await Candy.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    await user.addToWishList(candy);
+    res.redirect("/wishlist");
 });
 
 //Logga ut
@@ -237,7 +242,7 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
 //     })
 
 router.get("/checkout", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId userinfo.privateUserInfo");
+    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId");
     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, title: "Kassa - Lasses" });
 });
 
