@@ -171,9 +171,7 @@ router.get("/mypage", verifyToken, async (req, res) => {
 
 // Mypage - Update user information
 router.post("/mypage", verifyToken, async (req, res) => {
-    await User.findOne({ _id: req.user.user._id });
-
-    await UserInfo.updateOne({ _id: req.user.user._id },
+    await User.updateOne({ _id: req.user.user._id },
         {
             $set: {
                 lastname: req.body.lastname, 
@@ -234,13 +232,6 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
     res.redirect("/wishlist");
 })
 
-// För att komma till checkout
-// router.route("/checkout")
-//     .get(async (req, res) => {
-//         const shoppingBag = await Candy.find();
-//         res.render("checkout.ejs", { token: req.cookies.jsonwebtoken, shoppingBag, title: "Checkout" });
-//     })
-
 router.get("/checkout", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId");
     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, title: "Kassa - Lasses" });
@@ -259,5 +250,11 @@ router.get("/deleteItem/:id", verifyToken, async (req, res) => {
     user.removeFromList(req.params.id);
     res.redirect("/checkout");
 })
+
+router.get("/thankyou", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    res.render("thankyou", {token: req.cookies.jsonwebtoken, user, title: "Medlemssida - Lasses Lakrits"})
+});
 
 module.exports = router;
