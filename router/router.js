@@ -173,19 +173,19 @@ router.get("/mypage", verifyToken, async (req, res) => {
 // Mypage - Update user information
 router.post("/mypage", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
-    
-    const userInfo = await new User.userinfo({ 
-        lastname: req.body.lastname, 
-        phonenumber: req.body.phoneNr, 
-        address: req.body.address, 
-        zip: req.body.zipCode, 
-        city: req.body.city 
-    });
-    await userInfo.save();
 
-    await user.addPrivateInfo(userInfo);
-
-    res.send("User info has been updated.")
+    await User.updateOne({ _id: req.user.user._id },
+        {
+            $set: {
+                lastname: req.body.lastname, 
+                phonenumber: req.body.phoneNr, 
+                address: req.body.address, 
+                zip: req.body.zipCode, 
+                city: req.body.city 
+            }
+        }, { runValidators: true });
+        await user.addPrivateInfo(user);
+        res.redirect("/mypage");
 });
 
 //Logga ut
