@@ -13,13 +13,6 @@ const userSchema = new mongoose.Schema({
             ref: "Candy"
         }
     }],
-    // Användarinfo som finns på mypage
-    userinfo: [{
-        privateUserInfo: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserInfo"
-        }
-    }],
     // Användarinfo som fylls i vid beställning
     order: [{
         orderId: {
@@ -28,17 +21,6 @@ const userSchema = new mongoose.Schema({
         }
     }]
 });
-
-// Lägg till user information till mypage
-userSchema.methods.addPrivateInfo = function (privateInfo) {
-    this.userinfo.push({ privateUserInfo: privateInfo._id })
-    const updatedUserInfo = this.userinfo.filter(function ({ privateUserInfo }) {
-
-        return !this.has(`${privateInfo}`) && this.add(`${privateUserInfo}`)
-    }, new Set)
-    this.privateUserInfo = [...updatedUserInfo]
-    return this.save();
-}
 
 // Lägg till produkt till wishlist
 userSchema.methods.addToWishList = function (candy) {

@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const User = require("../model/userSchema");
-const UserInfo = require("../model/userInfoSchema");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendGridTransport = require("nodemailer-sendgrid-transport")
@@ -12,8 +11,6 @@ const config = require("../config/config");
 const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
 const router = express.Router();
-const UserInfo = require("../model/userInfoSchema");
-
 
 const transport = nodemailer.createTransport(sendGridTransport({
     auth: {
@@ -175,27 +172,39 @@ router.get("/mypage", verifyToken, async (req, res) => {
 
 // Mypage - Update user information
 router.post("/mypage", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id });
+    
+    const user = await User.findOne({ _id: req.user.user._id }).populate("userinfo.privateUserInfo");
+    console.log("Här kommer user");
+    console.log(user);
 
-    await UserInfo.updateOne({ _id: req.user.user._id },
-        {
-            $set: {
-                lastname: req.body.lastname, 
-                phonenumber: req.body.phoneNr, 
-                address: req.body.address, 
-                zip: req.body.zipCode, 
-                city: req.body.city 
-            }
-        }, { runValidators: true });
-        await user.addPrivateInfo(user);
-        res.redirect("/mypage");
-});
+    
+    const updatedUserInfo = await new UserInfo({
+        lastname: req.body.lastname,
+        phonenumber: req.body.phoneNr,
+        address: req.body.address,
+        zip: req.body.zipCode,
+        city: req.body.city 
+    });
+    
+ 
+    
+    await user.addPrivateInfo(updatedUserInfo);
 
-//Logga ut
-router.get("/logout", (req, res) => {
-    res.clearCookie("jsonwebtoken").redirect("/login");
-});
-
+    console.log("Här kommer updatedUserInfo: ")
+    console.log(updatedUserInfo);
+    
+    
+    res.redirect("/mypage", {user, updatedUserInfo});
+    
+    
+    
+    });
+    
+    //Logga ut
+    router.get("/logout", (req, res) => {
+        res.clearCookie("jsonwebtoken").redirect("/login");
+    });
+    
 //Ta bort user
 router.get("/deleteuser", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
