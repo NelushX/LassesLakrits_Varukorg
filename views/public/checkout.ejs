@@ -1,10 +1,10 @@
 <% if(token) { %> <%- include("userprofile/headermember.ejs") %> <% } 
  else { %> <%- include("header.ejs") %> <% } %>
 
- <% let total = 0 %>
- <% for (let i = 0; i < products.length; i++) { %>
- <% total += products[i].price * products[i].quantity %>
- <% } %>
+<% let total = 0 %>
+<% for (let i = 0; i < products.length; i++) { %>
+<% total += products[i].price * products[i].quantity %>
+<% } %>
 
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="./src/bootstrap-input-spinner.js"></script>
@@ -39,9 +39,7 @@
 							<input type="text" name="quantity" value="<%= candy.quantity %>" class="qty btn" />
 							<a href="/increaseQuantityInCart/<%= candy._id%>"><input type="button" value="+" class="qtyplus btn btn-light" data-field="quantity" /></a>
 						</form>
-						<a href="/removeCandyInCart/<%= candy._id%>"><button style="margin-top: 10px;"
-								type="button" class="btn btn-outline-dark wishlistButton">Ta bort från
-								listan</button></a>
+						<a href="/removeCandyInCart/<%= candy._id%>"><button style="margin-top: 10px;" type="button" class="btn btn-outline-dark wishlistButton">Ta bort från listan</button></a>
 					</li>
 					<% } ) %>
 				</ul>
@@ -49,12 +47,6 @@
 		</div>
 		<section class="orderForm totalsummor my-4 mx-4 pb-5 ml-auto">
 			<div class="container pt-4">
-				<!-- <div class="row">
-					<div class="col-12 text-center">
-						<h3>Totalsummor</h3>
-						<hr class="mt-1">
-					</div>
-				</div> -->
 				<div class="row mb-3 text-right">
 					<div class="col-6 total">
 						Summa artiklar:

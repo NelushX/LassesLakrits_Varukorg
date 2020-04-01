@@ -62,15 +62,15 @@ userSchema.methods.removeFromList = function (candyId) {
 }
 
 userSchema.methods.addToCart = function (candyId) {
- 
+
     const foundItem = this.cart.find(candy => candy.candyId == candyId)
- 
-        !foundItem ? this.cart.push({
-            candyId: candyId,
-            quantity: 1
-        }) :
+
+    !foundItem ? this.cart.push({
+        candyId: candyId,
+        quantity: 1
+    }) :
         foundItem.quantity++
- 
+
     return this.save()
 }
 
@@ -81,10 +81,8 @@ userSchema.methods.decreaseQuantityInCart = function (candyId) {
 
     if (foundItem.quantity == 0) {
         const restOftheProducts = this.cart.filter(candy => candy.candyId.toString() !== candyId)
-
         this.cart = restOftheProducts;
     }
-
     return this.save()
 }
 
@@ -97,9 +95,7 @@ userSchema.methods.increaseQuantityInCart = function (candyId) {
 }
 
 userSchema.methods.removeFromCart = function (candyId) {
-    const restOftheProducts = this.cart.filter(candy =>
-        candy.candyId.toString() !== candyId.toString()
-    );
+    const restOftheProducts = this.cart.filter(candy => candy.candyId.toString() !== candyId.toString());
     this.cart = restOftheProducts;
     return this.save();
 }
