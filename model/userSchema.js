@@ -36,7 +36,7 @@ userSchema.methods.addPrivateInfo = function (privateInfo) {
 
         return !this.has(`${privateInfo}`) && this.add(`${privateUserInfo}`)
     }, new Set)
-    this.privateUserInfo = [...privateUserInfo]
+    this.privateUserInfo = [...updatedUserInfo]
     return this.save();
 }
 
