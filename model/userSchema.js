@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     userinfo: [{
         privateUserInfo: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "UserInfoSchema"
+            ref: "UserInfo"
         }
     }],
     // Användarinfo som fylls i vid beställning

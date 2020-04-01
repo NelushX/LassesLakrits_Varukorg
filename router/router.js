@@ -11,6 +11,8 @@ const config = require("../config/config");
 const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
 const router = express.Router();
+const UserInfo = require("../model/userInfoSchema");
+
 
 const transport = nodemailer.createTransport(sendGridTransport({
     auth: {
@@ -174,7 +176,7 @@ router.get("/mypage", verifyToken, async (req, res) => {
 router.post("/mypage", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
 
-    await User.updateOne({ _id: req.user.user._id },
+    await UserInfo.updateOne({ _id: req.user.user._id },
         {
             $set: {
                 lastname: req.body.lastname, 
