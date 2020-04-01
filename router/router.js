@@ -183,7 +183,7 @@ router.post("/mypage", verifyToken, async (req, res) => {
                 city: req.body.city 
             }
         }, { runValidators: true });
-        res.redirect("/mypage");
+        res.redirect("/mypage"); 
 });
 
 router.get("/wishlist/:id", verifyToken, async (req, res) => {
