@@ -228,14 +228,15 @@ router.get("/wishlist/:id", verifyToken, async (req, res) => {
 
 router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
-    user.removeFromList(req.params.id);
+    await user.removeFromList(req.params.id);
     res.redirect("/wishlist");
 })
 
 router.get("/checkout", verifyToken, async (req, res) => {
+    let products = [];
+
     const user = await User.findOne({ _id: req.user.user._id });
     
-    let products = [];
 
     for (let i = 0; i < user.cart.length; i++) {
  
@@ -251,25 +252,28 @@ router.get("/checkout", verifyToken, async (req, res) => {
 });
 
 router.get("/checkout/:id", verifyToken, async (req, res) => {
-    const candy = await Candy.findOne({ _id: req.params.id });
     const user = await User.findOne({ _id: req.user.user._id });
 
-    await user.addToCart(candy);
+    await user.addToCart(req.params.id);
     res.redirect("/checkout");
 });
 
 
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
-    const candy = await Candy.findOne({ _id: req.params.id });
     const user = await User.findOne({ _id: req.user.user._id });
-    user.decreaseQuantityInCart(req.params.id);
+    await user.decreaseQuantityInCart(req.params.id);
     res.redirect("/checkout");
 })
 
 router.get("/increaseQuantityInCart/:id", verifyToken, async (req, res) => {
-    const candy = await Candy.findOne({ _id: req.params.id });
     const user = await User.findOne({ _id: req.user.user._id });
-    user.increaseQuantityInCart(req.params.id);
+    await user.increaseQuantityInCart(req.params.id);
+    res.redirect("/checkout");
+})
+
+router.get("/removeCandyInCart/:id", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id });
+    await user.removeFromCart(req.params.id);
     res.redirect("/checkout");
 })
 

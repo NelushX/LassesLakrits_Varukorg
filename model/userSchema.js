@@ -31,14 +31,14 @@ const userSchema = new mongoose.Schema({
             type: Number,
             require: true
         }
-    }]
+    }],
     // Användarinfo som fylls i vid beställning
-    // order: [{
-    //     orderId: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "Cart"
-    //     }
-    // }]
+    order: [{
+        orderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cart"
+        }
+    }]
 });
 
 // Lägg till produkt till wishlist
@@ -79,7 +79,7 @@ userSchema.methods.decreaseQuantityInCart = function (candyId) {
 
     foundItem.quantity--
 
-    if (foundItem == 0) {
+    if (foundItem.quantity == 0) {
         const restOftheProducts = this.cart.filter(candy => candy.candyId.toString() !== candyId)
 
         this.cart = restOftheProducts;
@@ -94,6 +94,14 @@ userSchema.methods.increaseQuantityInCart = function (candyId) {
 
     foundItem.quantity++
     return this.save()
+}
+
+userSchema.methods.removeFromCart = function (candyId) {
+    const restOftheProducts = this.cart.filter(candy =>
+        candy.candyId.toString() !== candyId.toString()
+    );
+    this.cart = restOftheProducts;
+    return this.save();
 }
 
 
