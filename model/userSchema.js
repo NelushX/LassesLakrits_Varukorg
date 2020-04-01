@@ -5,6 +5,11 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
+    lastname: { type: String },
+    phonenumber: { type: Number },
+    address: { type: String },
+    zip: { type: Number },
+    city: { type: String },
     resetToken: String,
     expirationToken: Date,
     wishlist: [{

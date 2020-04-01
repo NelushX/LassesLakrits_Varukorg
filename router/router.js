@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser")
 const User = require("../model/userSchema");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -172,39 +171,34 @@ router.get("/mypage", verifyToken, async (req, res) => {
 
 // Mypage - Update user information
 router.post("/mypage", verifyToken, async (req, res) => {
-    
-    const user = await User.findOne({ _id: req.user.user._id }).populate("userinfo.privateUserInfo");
-    console.log("Här kommer user");
-    console.log(user);
+    await User.findOne({ _id: req.user.user._id });
 
-    
-    const updatedUserInfo = await new UserInfo({
-        lastname: req.body.lastname,
-        phonenumber: req.body.phoneNr,
-        address: req.body.address,
-        zip: req.body.zipCode,
-        city: req.body.city 
-    });
-    
- 
-    
-    await user.addPrivateInfo(updatedUserInfo);
+    await UserInfo.updateOne({ _id: req.user.user._id },
+        {
+            $set: {
+                lastname: req.body.lastname, 
+                phonenumber: req.body.phoneNr, 
+                address: req.body.address, 
+                zip: req.body.zipCode, 
+                city: req.body.city 
+            }
+        }, { runValidators: true });
+        res.redirect("/mypage"); 
+});
 
-    console.log("Här kommer updatedUserInfo: ")
-    console.log(updatedUserInfo);
-    
-    
-    res.redirect("/mypage", {user, updatedUserInfo});
-    
-    
-    
-    });
-    
-    //Logga ut
-    router.get("/logout", (req, res) => {
-        res.clearCookie("jsonwebtoken").redirect("/login");
-    });
-    
+router.get("/wishlist/:id", verifyToken, async (req, res) => {
+    const candy = await Candy.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    await user.addToWishList(candy);
+    res.redirect("/wishlist");
+});
+
+//Logga ut
+router.get("/logout", (req, res) => {
+    res.clearCookie("jsonwebtoken").redirect("/login");
+});
+
 //Ta bort user
 router.get("/deleteuser", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
@@ -248,7 +242,7 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
 //     })
 
 router.get("/checkout", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId userinfo.privateUserInfo");
+    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId");
     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, title: "Kassa - Lasses" });
 });
 
