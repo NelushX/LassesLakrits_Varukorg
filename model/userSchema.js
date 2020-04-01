@@ -18,13 +18,27 @@ const userSchema = new mongoose.Schema({
             ref: "Candy"
         }
     }],
-    // Användarinfo som fylls i vid beställning
-    order: [{
-        orderId: {
+    cart: [{
+        candyId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Cart"
+            ref: "Candy"
+        },
+        quantity: {
+            type: Number,
+            require: true
+        },
+        price: {
+            type: Number,
+            require: true
         }
     }]
+    // Användarinfo som fylls i vid beställning
+    // order: [{
+    //     orderId: {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "Cart"
+    //     }
+    // }]
 });
 
 // Lägg till produkt till wishlist
@@ -45,6 +59,41 @@ userSchema.methods.removeFromList = function (candyId) {
     );
     this.wishlist = restOftheProducts;
     return this.save();
+}
+
+userSchema.methods.addToCart = function (candyId) {
+ 
+    const foundItem = this.cart.find(candy => candy.candyId == candyId)
+ 
+        !foundItem ? this.cart.push({
+            candyId: candyId,
+            quantity: 1
+        }) :
+        foundItem.quantity++
+ 
+    return this.save()
+}
+
+userSchema.methods.decreaseQuantityInCart = function (candyId) {
+    const foundItem = this.cart.find(candy => candy.candyId == candyId)
+
+    foundItem.quantity--
+
+    if (foundItem == 0) {
+        const restOftheProducts = this.cart.filter(candy => candy.candyId.toString() !== candyId)
+
+        this.cart = restOftheProducts;
+    }
+
+    return this.save()
+}
+
+
+userSchema.methods.increaseQuantityInCart = function (candyId) {
+    const foundItem = this.cart.find(candy => candy.candyId == candyId)
+
+    foundItem.quantity++
+    return this.save()
 }
 
 
