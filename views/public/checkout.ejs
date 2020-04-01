@@ -117,7 +117,7 @@
                 </div>
               </div>
               <div class="col-12 col-md-6">
-                <input class="form-control order-form-input" name="lastname" placeholder="Efternamn" value="<%=user.userinfo.lastname%>" required>
+                <input class="form-control order-form-input" name="lastname" placeholder="Efternamn" value="<%=user.lastname%>" required>
                 <div class="invalid-feedback">
                   Skriv in ditt efternamn.
                 </div>
@@ -126,7 +126,7 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input type="email" class="form-control order-form-input" name="email" placeholder="Email" required>
+                <input type="email" class="form-control order-form-input" name="email" placeholder="Email" value="<%=user.email%>" required>
                 <div class="invalid-feedback">
                   Lägg till din email.
                 </div>
@@ -135,7 +135,7 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input class="form-control order-form-input" name="phoneNr" placeholder="Mobilnummer" required>
+                <input class="form-control order-form-input" name="phoneNr" placeholder="Mobilnummer" value="<%=user.phonenumber%>" required>
                 <div class="invalid-feedback">
                   Lägg till ditt mobilnummer.
                 </div>
@@ -144,7 +144,7 @@
                 </div>
               </div>
               <div class="col-12 mt-2">
-                <input class="form-control order-form-input" name="address" placeholder="Adress" required>
+                <input class="form-control order-form-input" name="address" placeholder="Adress" value="<%=user.address%>" required>
                 <div class="invalid-feedback">
                   Lägg till din adress.
                 </div>
@@ -152,8 +152,8 @@
                   Tack!
                 </div>
               </div>
-              <div class="col-12 col-sm-6 col-md-4 mt-2 pr-sm-2 pr-md-2">
-                <input class="form-control order-form-input" name="postalcode" placeholder="Postnummer" required>
+              <div class="col-12 col-md-6 mt-2">
+                <input class="form-control order-form-input" name="postalcode" placeholder="Postnummer" value="<%=user.zip%>" required>
                 <div class="invalid-feedback">
                   Lägg till ditt postnummer.
                 </div>
@@ -161,19 +161,10 @@
                   Tack!
                 </div>
               </div>
-              <div class="col-12 col-sm-6 col-md-4 mt-2 pl-sm-0 p-md-0">
-                <input class="form-control order-form-input" name="city" placeholder="Stad" required>
+              <div class="col-12 col-md-6 mt-2">
+                <input class="form-control order-form-input" name="city" placeholder="Stad" value="<%=user.city%>" required>
                 <div class="invalid-feedback">
                   Lägg till staden som du bor i.
-                </div>
-                <div class="valid-feedback">
-                  Tack!
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 mt-2 pl-md-2">
-                <input class="form-control order-form-input" name="country" placeholder="Land" required>
-                <div class="invalid-feedback">
-                  Lägg till det landet som du bor i.
                 </div>
                 <div class="valid-feedback">
                   Tack!

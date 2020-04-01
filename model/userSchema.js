@@ -5,19 +5,17 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
+    lastname: { type: String },
+    phonenumber: { type: Number },
+    address: { type: String },
+    zip: { type: Number },
+    city: { type: String },
     resetToken: String,
     expirationToken: Date,
     wishlist: [{
         candyId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Candy"
-        }
-    }],
-    // Användarinfo som finns på mypage
-    userinfo: [{
-        privateUserInfo: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserInfo"
         }
     }],
     // Användarinfo som fylls i vid beställning
@@ -28,17 +26,6 @@ const userSchema = new mongoose.Schema({
         }
     }]
 });
-
-// Lägg till user information till mypage
-userSchema.methods.addPrivateInfo = function (privateInfo) {
-    this.userinfo.push({ privateUserInfo: privateInfo._id })
-    const updatedUserInfo = this.userinfo.filter(function ({ privateUserInfo }) {
-
-        return !this.has(`${privateInfo}`) && this.add(`${privateUserInfo}`)
-    }, new Set)
-    this.privateUserInfo = [...updatedUserInfo]
-    return this.save();
-}
 
 // Lägg till produkt till wishlist
 userSchema.methods.addToWishList = function (candy) {
