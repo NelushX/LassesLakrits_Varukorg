@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
+    firstname: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
     lastname: { type: String },
@@ -85,7 +85,6 @@ userSchema.methods.decreaseQuantityInCart = function (candyId) {
     }
     return this.save()
 }
-
 
 userSchema.methods.increaseQuantityInCart = function (candyId) {
     const foundItem = this.cart.find(candy => candy.candyId == candyId)

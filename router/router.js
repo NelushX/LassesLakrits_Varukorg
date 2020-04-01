@@ -59,7 +59,7 @@ router.route("/signup")
 
         const user = await new User({
             email: req.body.email,
-            name: req.body.name,
+            firstname: req.body.firstname,
             password: hashPassword
         }).save();
 
@@ -184,14 +184,6 @@ router.post("/mypage", verifyToken, async (req, res) => {
         res.redirect("/mypage"); 
 });
 
-router.get("/wishlist/:id", verifyToken, async (req, res) => {
-    const candy = await Candy.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: req.user.user._id });
-
-    await user.addToWishList(candy);
-    res.redirect("/wishlist");
-});
-
 //Logga ut
 router.get("/logout", (req, res) => {
     res.clearCookie("jsonwebtoken").redirect("/login");
@@ -236,11 +228,9 @@ router.get("/checkout", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     
     for (let i = 0; i < user.cart.length; i++) {
-        let product = await Candy.findOne({
-            _id: user.cart[i].candyId
-        })
-        product.quantity = user.cart[i].quantity
-        products.push(product)
+        let product = await Candy.findOne({ _id: user.cart[i].candyId });
+        product.quantity = user.cart[i].quantity;
+        products.push(product);
     }
 
     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, title: "Kassa - Lasses" });
@@ -251,7 +241,6 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
     await user.addToCart(req.params.id);
     res.redirect("/checkout");
 });
-
 
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
