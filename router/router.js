@@ -11,7 +11,6 @@ const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
 const router = express.Router();
 
-
 const transport = nodemailer.createTransport(sendGridTransport({
     auth: {
         api_key: config.mail
@@ -273,5 +272,11 @@ router.get("/increaseQuantityInCart/:id", verifyToken, async (req, res) => {
     user.increaseQuantityInCart(req.params.id);
     res.redirect("/checkout");
 })
+
+router.get("/thankyou", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    res.render("thankyou", {token: req.cookies.jsonwebtoken, user, title: "Medlemssida - Lasses Lakrits"})
+});
 
 module.exports = router;
