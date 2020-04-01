@@ -26,12 +26,12 @@
 				<ul class="wishlist ">
 					<% products.forEach( (candy)=>{ %>
 					<li class="wishlistItem">
-						<a href="/allproducts/<%=candy.name %>">
-							<p><%= candy.name %></p>
+						<a href="/allproducts/<%=candy.firstname %>">
+							<p><%= candy.firstname %></p>
 						</a>
 						<p><%= candy.price %> kr </p>
 						<div>
-							<a href="/allproducts/<%=candy.name %>"><img src="<%= candy.img %>"
+							<a href="/allproducts/<%=candy.firstname %>"><img src="<%= candy.img %>"
 									alt="Bild på lakrits" class="hover wishlistImg"></a>
 						</div>
 						<form id="myform">
@@ -98,7 +98,7 @@
               <div class="col-12 mb-2">
               </div>
               <div class="col-12 col-md-6">
-                <input class="form-control order-form-input" name="name" placeholder="Förnamn" value="<%=user.name%>" required>
+                <input class="form-control order-form-input" name="firstname" placeholder="Förnamn" value="<%=user.firstname%>" required>
                 <div class="invalid-feedback">
                   Skriv in ditt förnamn.
                 </div>

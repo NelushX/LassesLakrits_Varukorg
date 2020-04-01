@@ -59,7 +59,7 @@ router.route("/signup")
 
         const user = await new User({
             email: req.body.email,
-            name: req.body.name,
+            firstname: req.body.firstname,
             password: hashPassword
         }).save();
 
