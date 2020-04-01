@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser")
-const User = require("../model/userSchema")
+const User = require("../model/userSchema");
+const UserInfo = require("../model/userInfoSchema");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendGridTransport = require("nodemailer-sendgrid-transport")
@@ -236,7 +237,7 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
 //     })
 
 router.get("/checkout", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId");
+    const user = await User.findOne({ _id: req.user.user._id }).populate("wishlist.candyId userinfo.privateUserInfo");
     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, title: "Kassa - Lasses" });
 });
 

@@ -8,6 +8,6 @@ const userInfoSchema = new mongoose.Schema({
     city: { type: String }
 });
 
-const UserInfoSchema = mongoose.model("Private_user_info", userInfoSchema);
+const UserInfo = mongoose.model("UserInfo", userInfoSchema);
 
-module.exports = UserInfoSchema;
+module.exports = UserInfo;
