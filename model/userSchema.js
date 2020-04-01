@@ -86,7 +86,6 @@ userSchema.methods.decreaseQuantityInCart = function (candyId) {
     return this.save()
 }
 
-
 userSchema.methods.increaseQuantityInCart = function (candyId) {
     const foundItem = this.cart.find(candy => candy.candyId == candyId)
 
@@ -99,7 +98,6 @@ userSchema.methods.removeFromCart = function (candyId) {
     this.cart = restOftheProducts;
     return this.save();
 }
-
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

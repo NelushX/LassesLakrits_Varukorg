@@ -184,14 +184,6 @@ router.post("/mypage", verifyToken, async (req, res) => {
         res.redirect("/mypage"); 
 });
 
-router.get("/wishlist/:id", verifyToken, async (req, res) => {
-    const candy = await Candy.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: req.user.user._id });
-
-    await user.addToWishList(candy);
-    res.redirect("/wishlist");
-});
-
 //Logga ut
 router.get("/logout", (req, res) => {
     res.clearCookie("jsonwebtoken").redirect("/login");
@@ -236,9 +228,7 @@ router.get("/checkout", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     
     for (let i = 0; i < user.cart.length; i++) {
-        let product = await Candy.findOne({
-            _id: user.cart[i].candyId
-        })
+        let product = await Candy.findOne({ _id: user.cart[i].candyId });
         product.quantity = user.cart[i].quantity
         products.push(product)
     }
@@ -252,28 +242,28 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
     res.redirect("/checkout");
 });
 
-
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     await user.decreaseQuantityInCart(req.params.id);
     res.redirect("/checkout");
-})
+});
 
 router.get("/increaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     await user.increaseQuantityInCart(req.params.id);
     res.redirect("/checkout");
-})
+});
 
 router.get("/removeCandyInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     await user.removeFromCart(req.params.id);
     res.redirect("/checkout");
-})
+});
 
 router.get("/thankyou", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
-    res.render("thankyou", {token: req.cookies.jsonwebtoken, user, title: "Medlemssida - Lasses Lakrits"})
+    res.render("thankyou", {token: req.cookies.jsonwebtoken, user, title: "Medlemssida - Lasses Lakrits"});
 });
+
 
 module.exports = router;
