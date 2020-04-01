@@ -9,6 +9,7 @@ const verifyToken = require("./verifyToken")
 const config = require("../config/config");
 const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
+const Order = require("../model/orderSchema");
 const router = express.Router();
 
 const transport = nodemailer.createTransport(sendGridTransport({
@@ -242,6 +243,26 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
     res.redirect("/checkout");
 });
 
+router.post("/checkout/:id", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.user.user._id });
+
+    const newOrder = await Order.updateOne({ _id: req.user.user._id },
+        {
+            $set: {
+                cardKeeper: req.body.cardKeeper, 
+                cardNr: req.body.cardNr, 
+                expiaryMonth: req.body.expiaryMonth, 
+                expiaryYear: req.body.expiaryYear,
+                cvc: req.body.cvc 
+            }
+        }, { runValidators: true });
+        
+        await user.addToOrderList(newOrder);
+
+    res.redirect("/thankyou", {user})
+});
+
+
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     await user.decreaseQuantityInCart(req.params.id);
@@ -264,6 +285,5 @@ router.get("/thankyou", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
     res.render("thankyou", {token: req.cookies.jsonwebtoken, user, title: "Medlemssida - Lasses Lakrits"});
 });
-
 
 module.exports = router;

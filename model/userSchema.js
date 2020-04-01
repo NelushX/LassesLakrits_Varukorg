@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    firstname: { type: String, required: true },
+    name: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
     lastname: { type: String },
@@ -26,20 +26,27 @@ const userSchema = new mongoose.Schema({
         quantity: {
             type: Number,
             require: true
-        },
-        price: {
-            type: Number,
-            require: true
         }
     }],
     // Användarinfo som fylls i vid beställning
-    order: [{
-        orderId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Cart"
-        }
-    }]
+    // order: [{
+    //     orderId: {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "Cart"
+    //     }
+    // }]
 });
+
+// Lägg till beställning till order listan
+// userSchema.methods.addToOrderList = function (orderObject) {
+//     this.order.push({ orderId: orderObject._id, quantity: orderObject.quantity })
+//     const orderList = this.order.filter(function ({ orderId }) {
+
+//         return !this.has(`${orderId}`) && this.add(`${orderId}`)
+//     }, new Set)
+//     this.order = [...orderList]
+//     return this.save();
+// }
 
 // Lägg till produkt till wishlist
 userSchema.methods.addToWishList = function (candy) {
@@ -61,8 +68,8 @@ userSchema.methods.removeFromList = function (candyId) {
     return this.save();
 }
 
+// Lägger till produkt till varukorg
 userSchema.methods.addToCart = function (candyId) {
-
     const foundItem = this.cart.find(candy => candy.candyId == candyId)
 
     !foundItem ? this.cart.push({
