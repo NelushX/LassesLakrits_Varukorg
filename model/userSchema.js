@@ -115,27 +115,14 @@ userSchema.methods.removeFromCart = function (candyId) {
 }
 
 userSchema.methods.addToOrder = function (candyId) {
-    // this.order.find(candy => candy.candyId !== candyId)
-    // this.order.push({candyId: candyId})
+    this.order.find(candy => candy.candyId !== candyId)
+    this.order.push({candyId: candyId})
 
-    const orderlist = this.order.find(candy => candy.candyId !== candyId);
-    this.order = orderlist;
+    // const orderlist = this.order.find(candy => candy.candyId !== candyId);
+    // this.order = orderlist;
 
     return this.save()
 }
-
-// userSchema.methods.addToOrder = function (candyId) {
- 
-//     const foundItem = this.order.find(candy => candy.candyId == candyId)
- 
-//     !foundItem ? this.order.push({
-//         ObjectId: candyId,
-//         quantity: candyId.quantity
-//     }) :
-//     foundItem.quantity++
- 
-// return this.save()
-// }
 
 
 const User = mongoose.model("User", userSchema);
