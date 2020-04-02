@@ -92,7 +92,7 @@ router.route("/admin2")
         const user = await User.findOne({ _id: req.user.user._id });
 
         if (req.user.user.admin == true) {
-            const sortName = req.query.name;
+            const sortFirstName = req.query.firstname;
             const sortAdmin = req.query.admin;
             const queryExist = req.query.page;
 
@@ -106,7 +106,7 @@ router.route("/admin2")
             const pageCount = Math.ceil(userQuantity / usersPerPage)
 
             let onlyUsers = { admin: false };
-            const findUsers = await User.find(onlyUsers).collation({ locale: "sv", strength: 2 }).sort({ name: sortName }).skip(usersPerPage * (page - 1)).limit(usersPerPage);
+            const findUsers = await User.find(onlyUsers).collation({ locale: "sv", strength: 2 }).sort({ firstname: sortFirstName }).skip(usersPerPage * (page - 1)).limit(usersPerPage);
 
             let onlyAdmins = { admin: true };
             const findAdmins = await User.find(onlyAdmins).collation({ locale: "sv", strength: 2 }).sort({ admin: sortAdmin }).skip(usersPerPage * (page - 1)).limit(usersPerPage);
@@ -131,7 +131,7 @@ router.route("/updateUser/:id")
         await User.updateOne({ _id: req.params.id },
             {
                 $set: {
-                    name: req.body.name,
+                    firstname: req.body.firstname,
                     email: req.body.email,
                     admin: req.body.admin
                 }

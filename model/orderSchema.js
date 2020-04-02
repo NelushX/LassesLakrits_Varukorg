@@ -22,11 +22,11 @@ const orderSchema = new mongoose.Schema({
         require: true,
         default: Date.now()
     },
-    cardKeeper: { type: String, required: true },
-    cardNr: { type: Number, required: true },
-    expiaryMonth: { type: Number, required: true },
-    expiaryYear: { type: Number, required: true },
-    cvc: { type: Number, required: true }
+    // cardKeeper: { type: String, required: true },
+    // cardNr: { type: Number, required: true },
+    // expiaryMonth: { type: Number, required: true },
+    // expiaryYear: { type: Number, required: true },
+    // cvc: { type: Number, required: true }
 });
 
 // Lägg till beställning till order listan

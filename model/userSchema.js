@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
+    firstname: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
     lastname: { type: String },
@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     address: { type: String },
     zip: { type: Number },
     city: { type: String },
+    cardKeeper: { type: String },
+    cardNr: { type: Number },
+    expiaryMonth: { type: Number},
+    expiaryYear: { type: Number },
+    cvc: { type: Number },
     resetToken: String,
     expirationToken: Date,
     wishlist: [{
@@ -105,6 +110,7 @@ userSchema.methods.removeFromCart = function (candyId) {
     this.cart = restOftheProducts;
     return this.save();
 }
+  
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
