@@ -1,6 +1,13 @@
 <% if(token) { %> <%- include("userprofile/headermember.ejs") %> <% } 
  else { %> <%- include("header.ejs") %> <% } %>
 
+ <% if(products < 1){ %>
+  <h3 class="mt-5 text-center">Din varukorg är tom</h3>
+  <div class="mt-4 text-center">
+    <a href="/allproducts"><button type="button" class="btn btn-outline-dark">Gå till produktlistan</button></a>
+  </div>
+  <% } else { %>
+
 <% let total = 0 %>
 <% for (let i = 0; i < products.length; i++) { %>
 <% total += products[i].price * products[i].quantity %>
@@ -19,9 +26,7 @@
   <div class="container thecontainer">
     <div class="row justify-content-center">
       <div class="text-center">
-        <% if(products < 1){ %>
-        <p>Din varukorg är tom</p>
-        <% } %>
+
 
         <ul class="wishlist ">
           <% products.forEach( (candy)=>{ %>
@@ -195,6 +200,7 @@
       })
     });
 </script>
+<% } %>
 <% } %>
 
 
