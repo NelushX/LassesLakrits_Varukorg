@@ -247,11 +247,10 @@ router.get("/checkout", verifyToken, async (req, res) => {
         }),
         success_url: "http://localhost:8000/thankyou",
         cancel_url: "http://localhost:8000/checkout"
-    }).then((session) => {
-        console.log(session)
+    }).then(function (session) {
         res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, sessionId: session.id, title: "Kassa - Lasses" });
-    });
-})
+    })
+});
 
 router.get("/checkout/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });

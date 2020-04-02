@@ -9,7 +9,7 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="./src/bootstrap-input-spinner.js"></script>
 <script>
-	$("input[type='number']").inputSpinner()
+  $("input[type='number']").inputSpinner()
 </script>
 <div class="container mypage">
   <div class="row justify-content-center py-2">
@@ -23,60 +23,63 @@
         <p>Din varukorg är tom</p>
         <% } %>
 
-				<ul class="wishlist ">
-					<% products.forEach( (candy)=>{ %>
-					<li class="wishlistItem">
-						<a href="/allproducts/<%=candy.name %>">
-							<p><%= candy.name %></p>
-						</a>
-						<p><%= candy.price %> kr </p>
-						<div>
-							<a href="/allproducts/<%=candy.name %>"><img src="<%= candy.img %>"
-									alt="Bild på lakrits" class="hover wishlistImg"></a>
-						</div>
-						<form id="myform">
-							<a href="/decreaseQuantityInCart/<%= candy._id%>"><input type="button" value="-" class="qtyminus btn btn-light" data-field="quantity" /></a>
-							<input type="text" name="quantity" value="<%= candy.quantity %>" class="qty btn" />
-							<a href="/increaseQuantityInCart/<%= candy._id%>"><input type="button" value="+" class="qtyplus btn btn-light" data-field="quantity" /></a>
-						</form>
-						<a href="/removeCandyInCart/<%= candy._id%>"><button style="margin-top: 10px;" type="button" class="btn btn-outline-dark wishlistButton">Ta bort från listan</button></a>
-					</li>
-					<% } ) %>
-				</ul>
-			</div>
-		</div>
-		<section class="orderForm totalsummor my-4 mx-4 pb-5 ml-auto">
-			<div class="container pt-4">
-				<div class="row mb-3 text-right">
-					<div class="col-6 total">
-						Summa artiklar:
-					</div>
-					<div class="col-6 total">
-						<%= total %> kr
-					</div>
-					<div class="col-6">
-						Fraktavgift:
-					</div>
-					<div class="col-6">
-						0 kr
-					</div>
-				</div>
-				<div class="row text-right">
-					<div class="col-6 totalInklMoms">
-            Totalt inkl. moms: 
-					</div>
-					<div class="col-6 totalInklMoms">
-						<%= total %> kr
-					</div>
-					<div class="col-6">
-						varav moms:
-					</div>
+        <ul class="wishlist ">
+          <% products.forEach( (candy)=>{ %>
+          <li class="wishlistItem">
+            <a href="/allproducts/<%=candy.name %>">
+              <p><%= candy.name %></p>
+            </a>
+            <p><%= candy.price %> kr </p>
+            <div>
+              <a href="/allproducts/<%=candy.name %>"><img src="<%= candy.img %>" alt="Bild på lakrits"
+                  class="hover wishlistImg"></a>
+            </div>
+            <form id="myform">
+              <a href="/decreaseQuantityInCart/<%= candy._id%>"><input type="button" value="-"
+                  class="qtyminus btn btn-light" data-field="quantity" /></a>
+              <input type="text" name="quantity" value="<%= candy.quantity %>" class="qty btn" />
+              <a href="/increaseQuantityInCart/<%= candy._id%>"><input type="button" value="+"
+                  class="qtyplus btn btn-light" data-field="quantity" /></a>
+            </form>
+            <a href="/removeCandyInCart/<%= candy._id%>"><button style="margin-top: 10px;" type="button"
+                class="btn btn-outline-dark wishlistButton">Ta bort från listan</button></a>
+          </li>
+          <% } ) %>
+        </ul>
+      </div>
+    </div>
+    <section class="orderForm totalsummor my-4 mx-4 pb-5 ml-auto">
+      <div class="container pt-4">
+        <div class="row mb-3 text-right">
+          <div class="col-6 total">
+            Summa artiklar:
+          </div>
+          <div class="col-6 total">
+            <%= total %> kr
+          </div>
           <div class="col-6">
-						<%= total * 0.2 %> kr
-					</div>
-				</div>
-		</section>
-	</div>
+            Fraktavgift:
+          </div>
+          <div class="col-6">
+            0 kr
+          </div>
+        </div>
+        <div class="row text-right">
+          <div class="col-6 totalInklMoms">
+            Totalt inkl. moms:
+          </div>
+          <div class="col-6 totalInklMoms">
+            <%= total %> kr
+          </div>
+          <div class="col-6">
+            varav moms:
+          </div>
+          <div class="col-6">
+            <%= total * 0.2 %> kr
+          </div>
+        </div>
+    </section>
+  </div>
 
   <div class="row justify-content-center pt-2">
     <h3 class="checkout-information-title">Din information</h3>
@@ -99,7 +102,8 @@
               <div class="col-12 mb-2">
               </div>
               <div class="col-12 col-md-6">
-                <input class="form-control order-form-input" name="firstname" placeholder="Förnamn" value="<%=user.firstname%>" required>
+                <input class="form-control order-form-input" name="firstname" placeholder="Förnamn"
+                  value="<%=user.firstname%>" required>
                 <div class="invalid-feedback">
                   Skriv in ditt förnamn.
                 </div>
@@ -108,7 +112,8 @@
                 </div>
               </div>
               <div class="col-12 col-md-6">
-                <input class="form-control order-form-input" name="lastname" placeholder="Efternamn" value="<%=user.lastname%>" required>
+                <input class="form-control order-form-input" name="lastname" placeholder="Efternamn"
+                  value="<%=user.lastname%>" required>
                 <div class="invalid-feedback">
                   Skriv in ditt efternamn.
                 </div>
@@ -117,7 +122,8 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input type="email" class="form-control order-form-input" name="email" placeholder="Email" value="<%=user.email%>" readonly>
+                <input type="email" class="form-control order-form-input" name="email" placeholder="Email"
+                  value="<%=user.email%>" readonly>
                 <div class="invalid-feedback">
                   Lägg till din email.
                 </div>
@@ -126,7 +132,8 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input class="form-control order-form-input" name="phoneNr" placeholder="Mobilnummer" value="<%=user.phonenumber%>" required>
+                <input class="form-control order-form-input" name="phoneNr" placeholder="Mobilnummer"
+                  value="<%=user.phonenumber%>" required>
                 <div class="invalid-feedback">
                   Lägg till ditt mobilnummer.
                 </div>
@@ -135,7 +142,8 @@
                 </div>
               </div>
               <div class="col-12 mt-2">
-                <input class="form-control order-form-input" name="address" placeholder="Adress" value="<%=user.address%>" required>
+                <input class="form-control order-form-input" name="address" placeholder="Adress"
+                  value="<%=user.address%>" required>
                 <div class="invalid-feedback">
                   Lägg till din adress.
                 </div>
@@ -144,7 +152,8 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input class="form-control order-form-input" name="zip" placeholder="Postnummer" value="<%=user.zip%>" required>
+                <input class="form-control order-form-input" name="zip" placeholder="Postnummer" value="<%=user.zip%>"
+                  required>
                 <div class="invalid-feedback">
                   Lägg till ditt postnummer.
                 </div>
@@ -153,7 +162,8 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 mt-2">
-                <input class="form-control order-form-input" name="city" placeholder="Stad" value="<%=user.city%>" required>
+                <input class="form-control order-form-input" name="city" placeholder="Stad" value="<%=user.city%>"
+                  required>
                 <div class="invalid-feedback">
                   Lägg till staden som du bor i.
                 </div>
