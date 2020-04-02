@@ -13,11 +13,6 @@ const cartSchema = new mongoose.Schema({
     // address: { type: String, required: true },
     // zip: { type: Number, required: true },
     // city: { type: String, required: true },
-    cardKeeper: { type: String, required: true },
-    cardNr: { type: Number, required: true },
-    expiaryMonth: { type: Number, required: true },
-    expiaryYear: { type: Number, required: true },
-    cvc: { type: Number, required: true }
 });
 
 const Cart = mongoose.model("Cart", cartSchema);

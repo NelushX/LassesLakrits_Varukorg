@@ -10,11 +10,6 @@ const userSchema = new mongoose.Schema({
     address: { type: String },
     zip: { type: Number },
     city: { type: String },
-    cardKeeper: { type: String },
-    cardNr: { type: Number },
-    expiaryMonth: { type: Number},
-    expiaryYear: { type: Number },
-    cvc: { type: Number },
     resetToken: String,
     expirationToken: Date,
     wishlist: [{
