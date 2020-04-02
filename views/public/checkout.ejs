@@ -175,7 +175,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  var stripe = Stripe("pk_test_GvsWYMURyMcIirvoaTVRVnyc009Yo67npD");
+  let stripe = Stripe("pk_test_GvsWYMURyMcIirvoaTVRVnyc009Yo67npD");
   document.querySelector("#btnStripe").addEventListener("click", () => {
     stripe.redirectToCheckout({
       sessionId: "<%= sessionId %>"

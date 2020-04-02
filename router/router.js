@@ -11,9 +11,6 @@ const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
 const Order = require("../model/orderSchema");
 const stripe = require("stripe")("sk_test_iGFuYCJ08oMZKh7X7iljWtBu0093pD2x7m");
-
-// require dotenv
-// process.env.STRIPE_KEY
 const router = express.Router();
 
 const transport = nodemailer.createTransport(sendGridTransport({
@@ -230,7 +227,7 @@ router.get("/deleteWishlist/:id", verifyToken, async (req, res) => {
 
 router.get("/checkout", verifyToken, async (req, res) => {
     let products = [];
-    const user = await User.findOne({ _id: req.user.user._id }).populate("cart.candyId");
+    const user = await User.findOne({ _id: req.user.user._id });
 
     for (let i = 0; i < user.cart.length; i++) {
         let product = await Candy.findOne({ _id: user.cart[i].candyId });
@@ -249,7 +246,7 @@ router.get("/checkout", verifyToken, async (req, res) => {
             }
         }),
         success_url: "http://localhost:8000/thankyou",
-        cancel_url: "http://localhost:8000/allproducts"
+        cancel_url: "http://localhost:8000/checkout"
     }).then((session) => {
         console.log(session)
         res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, sessionId: session.id, title: "Kassa - Lasses" });
@@ -261,41 +258,6 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
     await user.addToCart(req.params.id);
     res.redirect("/checkout");
 });
-
-router.post("/checkout/:id", verifyToken, async (req, res) => {
-    // const user = await User.findOne({ _id: req.user.user._id });
-
-    // const newOrder = await Order.updateOne({ _id: req.user.user._id },
-    //     {
-    //         $set: {
-    //             cardKeeper: req.body.cardKeeper, 
-    //             cardNr: req.body.cardNr, 
-    //             expiaryMonth: req.body.expiaryMonth, 
-    //             expiaryYear: req.body.expiaryYear,
-    //             cvc: req.body.cvc 
-    //         }
-    //     }, { runValidators: true });
-
-    //     await user.addToOrderList(newOrder);
-
-    // res.redirect("/thankyou", {user})
-    const candy = await Candy.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: req.user.user._id });
-    await User.updateOne({ _id: req.user.user._id },
-        {
-            $set: {
-                cardKeeper: req.body.cardKeeper,
-                cardNr: req.body.cardNr,
-                expiaryMonth: req.body.expiaryMonth,
-                expiaryYear: req.body.expiaryYear,
-                cvc: req.body.cvc
-            }
-        }, { runValidators: true });
-
-
-    res.redirect("/thankyou");
-});
-
 
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });
