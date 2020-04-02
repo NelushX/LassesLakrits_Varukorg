@@ -47,6 +47,7 @@ router.route("/allproducts/:id")
         res.render("oneproduct", { token: req.cookies.jsonwebtoken, item, title: "Produkt" });
     })
 
+
 //Signup sidan
 router.route("/signup")
     .get(async (req, res) => {
@@ -227,22 +228,17 @@ router.get("/checkout", verifyToken, async (req, res) => {
     let products = [];
     const user = await User.findOne({ _id: req.user.user._id });
 
-    // if (user.cart >= 0) {
-    //     for (let i = 0; i < user.cart.length; i++) {
-    //         let product = await Candy.findOne({ _id: user.cart[i].candyId });
-    //         product.quantity = user.cart[i].quantity
-    //         products.push(product)
-    //     }
-    // } else {
-    //     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, title: "Kassa - Lasses" });
-    // }
-
     for (let i = 0; i < user.cart.length; i++) {
         let product = await Candy.findOne({ _id: user.cart[i].candyId });
         product.quantity = user.cart[i].quantity
         products.push(product)
     }
 
+    if(products.length == 0 ){
+        res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, title: "Kassa - Lasses" });
+        return;
+    }
+    
     return stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: products.map((candy) => {
@@ -256,6 +252,7 @@ router.get("/checkout", verifyToken, async (req, res) => {
         success_url: "http://localhost:8000/thankyou",
         cancel_url: "http://localhost:8000/checkout"
     }).then(function (session) {
+
         res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, sessionId: session.id, title: "Kassa - Lasses" });
     })
 });
@@ -285,20 +282,26 @@ router.get("/removeCandyInCart/:id", verifyToken, async (req, res) => {
 });
 
 router.get("/thankyou", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id }).populate("cart.candyId");
-    let thankyouProducts = [];
+    let products = [];
+ 
+    let user = await User.findOne({ _id: req.user.user._id });
 
     for (let i = 0; i < user.cart.length; i++) {
+ 
         let product = await Candy.findOne({ _id: user.cart[i].candyId });
-        product.quantity = user.cart[i].quantity
-        thankyouProducts.push(product)
+ 
+        product.quantity = user.cart[i].quantity;
+        products.push(product);
+ 
+        await user.createOrder(product, product.quantity);
     }
-    await user.addToOrder(req.params.id);
-    console.log(thankyouProducts)
+  
     user.cart = [];
+ 
     user.save();
-
-    res.render("thankyou", { token: req.cookies.jsonwebtoken, user, thankyouProducts, title: "Tack - Lasses Lakrits" })
-})
+ 
+    res.render("userprofile/thankyou", { token: req.cookies.jsonwebtoken, user, products, title: "Tack - Lasses Lakrits" });
+ 
+});
 
 module.exports = router;

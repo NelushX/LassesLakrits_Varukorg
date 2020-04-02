@@ -45,16 +45,16 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
-// Lägg till beställning till order listan
-// userSchema.methods.addToOrderList = function (orderObject) {
-//     this.order.push({ orderId: orderObject._id, quantity: orderObject.quantity })
-//     const orderList = this.order.filter(function ({ orderId }) {
-
-//         return !this.has(`${orderId}`) && this.add(`${orderId}`)
-//     }, new Set)
-//     this.order = [...orderList]
-//     return this.save();
-// }
+userSchema.methods.createOrder = function (candyId, quantity) {
+ 
+    this.order.find(product => product.candyId == candyId)
+    this.order.push({
+        candyId: candyId._id,
+        quantity: quantity
+    })
+ 
+return this.save();
+}
 
 // Lägg till produkt till wishlist
 userSchema.methods.addToWishList = function (candy) {
@@ -86,7 +86,7 @@ userSchema.methods.addToCart = function (candyId) {
     }) :
         foundItem.quantity++
 
-    return this.save()
+    return this.save();
 }
 
 userSchema.methods.decreaseQuantityInCart = function (candyId) {
@@ -98,14 +98,14 @@ userSchema.methods.decreaseQuantityInCart = function (candyId) {
         const restOftheProducts = this.cart.filter(candy => candy.candyId.toString() !== candyId)
         this.cart = restOftheProducts;
     }
-    return this.save()
+    return this.save();
 }
 
 userSchema.methods.increaseQuantityInCart = function (candyId) {
     const foundItem = this.cart.find(candy => candy.candyId == candyId)
 
     foundItem.quantity++
-    return this.save()
+    return this.save();
 }
 
 userSchema.methods.removeFromCart = function (candyId) {
@@ -121,7 +121,7 @@ userSchema.methods.addToOrder = function (candyId) {
     const orderlist = this.order.find(candy => candy.candyId !== candyId);
     this.order = orderlist;
 
-    return this.save()
+    return this.save();
 }
 
 // userSchema.methods.addToOrder = function (candyId) {
@@ -136,7 +136,6 @@ userSchema.methods.addToOrder = function (candyId) {
  
 // return this.save()
 // }
-
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
