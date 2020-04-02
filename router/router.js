@@ -244,9 +244,25 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
 });
 
 router.post("/checkout/:id", verifyToken, async (req, res) => {
-    const user = await User.findOne({ _id: req.user.user._id });
+    // const user = await User.findOne({ _id: req.user.user._id });
 
-    const newOrder = await Order.updateOne({ _id: req.user.user._id },
+    // const newOrder = await Order.updateOne({ _id: req.user.user._id },
+    //     {
+    //         $set: {
+    //             cardKeeper: req.body.cardKeeper, 
+    //             cardNr: req.body.cardNr, 
+    //             expiaryMonth: req.body.expiaryMonth, 
+    //             expiaryYear: req.body.expiaryYear,
+    //             cvc: req.body.cvc 
+    //         }
+    //     }, { runValidators: true });
+        
+    //     await user.addToOrderList(newOrder);
+
+    // res.redirect("/thankyou", {user})
+    const candy = await Candy.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.user.user._id });
+    await User.updateOne({ _id: req.user.user._id },
         {
             $set: {
                 cardKeeper: req.body.cardKeeper, 
@@ -256,10 +272,9 @@ router.post("/checkout/:id", verifyToken, async (req, res) => {
                 cvc: req.body.cvc 
             }
         }, { runValidators: true });
-        
-        await user.addToOrderList(newOrder);
 
-    res.redirect("/thankyou", {user})
+
+    res.redirect("/thankyou");
 });
 
 

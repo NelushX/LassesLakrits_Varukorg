@@ -6,7 +6,7 @@ const cartSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    // name: { type: String, required: true },
+    // firstname: { type: String, required: true },
     // lastname: { type: Number, required: true },
     // email: { type: String, required: true },
     // phoneNr: { type: Number, required: true },
