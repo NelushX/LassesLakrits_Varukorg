@@ -10,7 +10,8 @@ const config = require("../config/config");
 const Candy = require("../model/productSchema");
 const Cart = require("../model/cartSchema");
 const Order = require("../model/orderSchema");
-const stripe = require("stripe")("sk_test_z5NceyBpuNj8UzJtTP9WfLyQ00FKuwXsrF")
+const stripe = require("stripe")("sk_test_iGFuYCJ08oMZKh7X7iljWtBu0093pD2x7m");
+
 const router = express.Router();
 
 const transport = nodemailer.createTransport(sendGridTransport({
@@ -258,7 +259,6 @@ router.get("/checkout/:id", verifyToken, async (req, res) => {
     await user.addToCart(req.params.id);
     res.redirect("/checkout");
 });
-
 
 router.get("/decreaseQuantityInCart/:id", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id });

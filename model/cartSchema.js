@@ -12,7 +12,7 @@ const cartSchema = new mongoose.Schema({
     // phoneNr: { type: Number, required: true },
     // address: { type: String, required: true },
     // zip: { type: Number, required: true },
-    // city: { type: String, required: true },
+    // city: { type: String, required: true }
 });
 
 const Cart = mongoose.model("Cart", cartSchema);

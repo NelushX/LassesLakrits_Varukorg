@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         require: true,
         default: Date.now()
-    },
+    }
 });
 
 // Lägg till beställning till order listan
