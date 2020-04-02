@@ -15,15 +15,12 @@
     <div class="container thecontainer">
         <div class="row justify-content-center">
             <div class="text-center">
-                <% if(user.cart < 1){ %>
-                <p>Din varukorg är tom</p>
-                <% } %>
                 <ul class="wishlist ">
-                    <% user.cart.forEach( (candy)=>{ %>
+                    <% thankyouProducts.forEach( (candy)=>{ %>
                     <li class="wishlistItem">
-                        <a href="/allproducts/<%=candy.candyId.name %>"><p><%= candy.candyId.name %></p></a>
+                        <a href="/allproducts/<%=candy.name %>"><p><%= candy.name %></p></a>
                         <div>
-                            <a href="/allproducts/<%=candy.candyId.name %>"><img src="<%= candy.candyId.img %>" alt="Bild på lakrits" class="hover wishlistImg"></a>
+                            <a href="/allproducts/<%=candy.name %>"><img src="<%= candy.img %>" alt="Bild på lakrits" class="hover wishlistImg"></a>
                         </div>
                         <p class="qty btn"><%= candy.quantity %></p>
                     </li>

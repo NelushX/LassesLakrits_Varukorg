@@ -29,12 +29,20 @@ const userSchema = new mongoose.Schema({
         }
     }],
     // Användarinfo som fylls i vid beställning
-    // order: [{
-    //     orderId: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "Cart"
-    //     }
-    // }]
+    order: [{
+        candyId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Candy"
+        },
+        quantity: {
+            type: Number,
+            require: true
+        },
+        orderDate: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 });
 
 // Lägg till beställning till order listan
@@ -105,7 +113,30 @@ userSchema.methods.removeFromCart = function (candyId) {
     this.cart = restOftheProducts;
     return this.save();
 }
-  
+
+userSchema.methods.addToOrder = function (candyId) {
+    // this.order.find(candy => candy.candyId !== candyId)
+    // this.order.push({candyId: candyId})
+
+    const orderlist = this.order.find(candy => candy.candyId !== candyId);
+    this.order = orderlist;
+
+    return this.save()
+}
+
+// userSchema.methods.addToOrder = function (candyId) {
+ 
+//     const foundItem = this.order.find(candy => candy.candyId == candyId)
+ 
+//     !foundItem ? this.order.push({
+//         ObjectId: candyId,
+//         quantity: candyId.quantity
+//     }) :
+//     foundItem.quantity++
+ 
+// return this.save()
+// }
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

@@ -8,8 +8,6 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("./verifyToken")
 const config = require("../config/config");
 const Candy = require("../model/productSchema");
-const Cart = require("../model/cartSchema");
-const Order = require("../model/orderSchema");
 const stripe = require("stripe")("sk_test_iGFuYCJ08oMZKh7X7iljWtBu0093pD2x7m");
 const router = express.Router();
 
@@ -229,6 +227,16 @@ router.get("/checkout", verifyToken, async (req, res) => {
     let products = [];
     const user = await User.findOne({ _id: req.user.user._id });
 
+    // if (user.cart >= 0) {
+    //     for (let i = 0; i < user.cart.length; i++) {
+    //         let product = await Candy.findOne({ _id: user.cart[i].candyId });
+    //         product.quantity = user.cart[i].quantity
+    //         products.push(product)
+    //     }
+    // } else {
+    //     res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, title: "Kassa - Lasses" });
+    // }
+
     for (let i = 0; i < user.cart.length; i++) {
         let product = await Candy.findOne({ _id: user.cart[i].candyId });
         product.quantity = user.cart[i].quantity
@@ -278,7 +286,19 @@ router.get("/removeCandyInCart/:id", verifyToken, async (req, res) => {
 
 router.get("/thankyou", verifyToken, async (req, res) => {
     const user = await User.findOne({ _id: req.user.user._id }).populate("cart.candyId");
-    res.render("thankyou", { token: req.cookies.jsonwebtoken, user, title: "Tack - Lasses Lakrits" })
+    let thankyouProducts = [];
+
+    for (let i = 0; i < user.cart.length; i++) {
+        let product = await Candy.findOne({ _id: user.cart[i].candyId });
+        product.quantity = user.cart[i].quantity
+        thankyouProducts.push(product)
+    }
+    await user.addToOrder(req.params.id);
+    console.log(thankyouProducts)
+    user.cart = [];
+    user.save();
+
+    res.render("thankyou", { token: req.cookies.jsonwebtoken, user, thankyouProducts, title: "Tack - Lasses Lakrits" })
 })
 
 module.exports = router;
