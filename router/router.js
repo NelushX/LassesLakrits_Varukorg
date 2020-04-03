@@ -241,11 +241,11 @@ router.get("/checkout", verifyToken, async (req, res) => {
 
     return stripe.checkout.sessions.create({
         payment_method_types: ["card"],
-        line_items: products.map((candy) => {
+        line_items: products.map((oneProduct) => {
             return {
-                name: candy.name,
-                amount: candy.price * 100,
-                quantity: candy.quantity,
+                name: oneProduct.name,
+                amount: oneProduct.price * 100,
+                quantity: oneProduct.quantity,
                 currency: "sek"
             }
         }),
