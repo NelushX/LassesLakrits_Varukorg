@@ -46,14 +46,14 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.createOrder = function (candyId, quantity) {
- 
+
     this.order.find(product => product.candyId == candyId)
     this.order.push({
         candyId: candyId._id,
         quantity: quantity
     })
- 
-return this.save();
+
+    return this.save();
 }
 
 // Lägg till produkt till wishlist
@@ -114,28 +114,6 @@ userSchema.methods.removeFromCart = function (candyId) {
     return this.save();
 }
 
-userSchema.methods.addToOrder = function (candyId) {
-    // this.order.find(candy => candy.candyId !== candyId)
-    // this.order.push({candyId: candyId})
-
-    const orderlist = this.order.find(candy => candy.candyId !== candyId);
-    this.order = orderlist;
-
-    return this.save();
-}
-
-// userSchema.methods.addToOrder = function (candyId) {
- 
-//     const foundItem = this.order.find(candy => candy.candyId == candyId)
- 
-//     !foundItem ? this.order.push({
-//         ObjectId: candyId,
-//         quantity: candyId.quantity
-//     }) :
-//     foundItem.quantity++
- 
-// return this.save()
-// }
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

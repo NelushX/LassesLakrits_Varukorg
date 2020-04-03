@@ -234,11 +234,11 @@ router.get("/checkout", verifyToken, async (req, res) => {
         products.push(product)
     }
 
-    if(products.length == 0 ){
+    if (products.length == 0) {
         res.render("public/checkout", { token: req.cookies.jsonwebtoken, user, products, title: "Kassa - Lasses" });
         return;
     }
-    
+
     return stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: products.map((candy) => {
@@ -283,25 +283,25 @@ router.get("/removeCandyInCart/:id", verifyToken, async (req, res) => {
 
 router.get("/thankyou", verifyToken, async (req, res) => {
     let products = [];
- 
+
     let user = await User.findOne({ _id: req.user.user._id });
 
     for (let i = 0; i < user.cart.length; i++) {
- 
+
         let product = await Candy.findOne({ _id: user.cart[i].candyId });
- 
+
         product.quantity = user.cart[i].quantity;
         products.push(product);
- 
+
         await user.createOrder(product, product.quantity);
     }
-  
+
     user.cart = [];
- 
+
     user.save();
- 
+
     res.render("userprofile/thankyou", { token: req.cookies.jsonwebtoken, user, products, title: "Tack - Lasses Lakrits" });
- 
+
 });
 
 module.exports = router;
